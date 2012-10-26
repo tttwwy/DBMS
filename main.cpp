@@ -13,20 +13,24 @@ using namespace std;
 int main(int argc, char** argv)
 {
 
-//        sql_input();
-//
+    //        sql_input();
+    //
     DataBase data;
     vector<Attribute> temp1;
     temp1.push_back(Attribute("name", CHAR, 4));
     temp1.push_back(Attribute("phone", INT, 4));
     data.create_table("person", 1, temp1);
 
-//    vector<Attribute> temp2;
-//    temp2.push_back(Attribute("name", CHAR, 4));
-//    temp2.push_back(Attribute("id", CHAR, 4));
-//    data.create_table("student", 1, temp2);
-//        data.read_table();
-//    data.show_database();
+    temp1.push_back(Attribute("name", CHAR, 4));
+    temp1.push_back(Attribute("id", INT, 4));
+    data.create_table("class", 1, temp1);
+
+    //    vector<Attribute> temp2;
+    //    temp2.push_back(Attribute("name", CHAR, 4));
+    //    temp2.push_back(Attribute("id", CHAR, 4));
+    //    data.create_table("student", 1, temp2);
+    //        data.read_table();
+    //    data.show_database();
 
     vector<string> attri1;
     vector<string> value1;
@@ -45,21 +49,30 @@ int main(int argc, char** argv)
     data.tables[0].Insert(attri1, value1);
     data.tables[0].Insert(attri2, value2);
     data.tables[0].show_table();
-//    Condition condition("name",">","1111");
-    
-    data.tables[0].Delete("phone",'=',"1111");
-//    vector<int> a=   data.tables[0].search(Condition("phone",'>',"1111"));
-//    
-//    for (int i = 0;i < a.size();i++)
-//    {
-//        cout << a[i]<< endl;
-//    }
-//    cout << "\n";
-    data.tables[0].show_table();
-//    vector<int> temps;
-//    temps.push_back(1);
-//    data.Projection(data.tables[0].attributes,temps).show_table();
+    //    Condition condition("name",">","1111");
+    vector<string> table_name;
+    vector<string> attri_name;
+    table_name.push_back("person");
+    attri_name.push_back("person.name");
+    vector<Table> a;
+    vector<Condition> condition;
+
+    cout << endl;
+    data.Select(table_name,attri_name,a,condition);
+
+//    data.tables[0].Delete("phone", '=', "1111");
+    //    vector<int> a=   data.tables[0].search(Condition("phone",'>',"1111"));
+    //    
+    //    for (int i = 0;i < a.size();i++)
+    //    {
+    //        cout << a[i]<< endl;
+    //    }
+    //    cout << "\n";
 //    data.tables[0].show_table();
+    //    vector<int> temps;
+    //    temps.push_back(1);
+    //    data.Projection(data.tables[0].attributes,temps).show_table();
+    //    data.tables[0].show_table();
 
 
 

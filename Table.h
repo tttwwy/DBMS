@@ -363,7 +363,17 @@ public:
     {
         for (int i = 0; i < attributes.size(); i++)
         {
-            cout << attributes[i].name << "  ";
+            bool print = false;
+            for (int j = 0; j < attributes[i].name.size(); j++)
+            {
+                if (print)
+                    cout << attributes[i].name[j];
+                if (attributes[i].name[j] == '.')
+                {
+                    print = true;
+                }
+            }
+            cout << "  ";
         }
         cout << endl;
 

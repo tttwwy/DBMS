@@ -156,45 +156,55 @@ public:
 
         if (l1.size() == 0)
         {
+            newsize = table2.get_record_size();
             for (int j = 0; j < l2.size(); j++)
             {
                 file2.seekg(l2[j] * table2.get_record_size(), ios::beg);
                 file2.read(&judge, 1);
                 if (judge == '0')
                     continue;
-                file2.read(record + table1.get_record_size(), table2.get_record_size() - 1);
+                record[0] = '1';
+                file2.read(record+1, table2.get_record_size());
                 temp.write(record, newsize);
             }
         }
-        for (int i = 0; i < l1.size(); i++)
-        {
-            file1.seekg(l1[i] * table1.get_record_size(), ios::beg);
-            file1.read(&judge, 1);
-            if (judge == '0')
-                continue;
-            record[0] = '1';
-            file1.read(record + 1, table1.get_record_size() - 1);
-            for (int j = 0; j < l2.size(); j++)
+        else
+            for (int i = 0; i < l1.size(); i++)
             {
-                file2.seekg(l2[j] * table2.get_record_size(), ios::beg);
-                file2.read(&judge, 1);
+                file1.seekg(l1[i] * table1.get_record_size(), ios::beg);
+                file1.read(&judge, 1);
                 if (judge == '0')
                     continue;
-                file2.read(record + table1.get_record_size(), table2.get_record_size() - 1);
-                temp.write(record, newsize);
-            }
+                record[0] = '1';
+                file1.read(record + 1, table1.get_record_size() - 1);
+                for (int j = 0; j < l2.size(); j++)
+                {
+                    file2.seekg(l2[j] * table2.get_record_size(), ios::beg);
+                    file2.read(&judge, 1);
+                    if (judge == '0')
+                        continue;
+                    file2.read(record + table1.get_record_size(), table2.get_record_size() - 1);
+                    temp.write(record, newsize);
+                }
 
-        }
+            }
 
         file1.close();
         file2.close();
         temp.close();
         delete record;
 
-        table.attributes = table1.attributes;
-        for (int i = 0; i < table2.attributes.size(); i++)
+        if (l1.size() > 0)
         {
-            table.attributes.push_back(table2.attributes[i]);
+            table.attributes = table1.attributes;
+            for (int i = 0; i < table2.attributes.size(); i++)
+            {
+                table.attributes.push_back(table2.attributes[i]);
+            }
+        }
+        else
+        {
+            table.attributes = table2.attributes;
         }
 
         rename("temp/temp1", "temp/temp");
@@ -439,10 +449,12 @@ public:
     //taboe_name,为涉及的表名，projection,为最后需要显示的属性，join为等值连接操作，condition为查询条件
 
     //select student1.id,student1.name,school.name from student,school where student1.id = student2.id and school.name = "CCC";
-    void Select(vector<string> table_name, vector<Table> projection, vector<Table> join, vector<Condition> condition)
+
+    void Select(vector<string> table_name, vector<string> attri_name, vector<Table> join, vector<Condition> condition)
     {
 
         Table temp_table;
+        Table join_table;
         vector<int> P;
         map<string, vector<Condition> > table_condition; //table和condition的映射
         map<string, Table> find_table; //table名和table的映射
@@ -453,54 +465,76 @@ public:
 
         for (int i = 0; i < tables.size(); i++)
         {
-            find_table[tables[i].name] = tables[i];
+            Table temp = tables[i];
+            for (int j = 0; j < temp.attributes.size(); j++)
+            {
+                temp.attributes[j].name = temp.name + "." + temp.attributes[j].name;
+            }
+            find_table[tables[i].name] = temp;
         }
 
-        for (vector<Table>::iterator p = tables.begin(); p != tables.end();)
+        vector<Table> table;
+        for (int i = 0; i < table_name.size(); i++)
         {
-            bool is_delete = true;
-            for (int i = 0; i < join.size(); i++)
+            if (join.size() > 0)
             {
-                if (p->name == join[i].name)
-                {
-                    p = tables.erase(p);
-                    is_delete = false;
-                }
+                if (table_name[i] != join[0].name and table_name[i] != join[1].name)
+                    table.push_back(find_table[table_name[i]]);
             }
-            if (is_delete)
-                ++p;
+            else
+                table.push_back(find_table[table_name[i]]);
         }
+
+
 
 
         if (join.size() > 0)
         {
-            for (int i = 0; i < tables.size(); i++)
-            {
-                vector<int> l1 = tables[i].search(table_condition[tables[i].name]);
-                vector<int> l2;
-                temp_table = Equi_Join(temp_table, tables[i], l2, l1);
-            }
+            Table table1 = find_table[join[0].name];
+            Table table2 = find_table[join[1].name];
+            vector<int> l1 = table1.search(table_condition[join[0].name]);
+            vector<int> l2 = table2.search(table_condition[join[1].name]);
+            join_table = Equi_Join(table1, table2, l1, l2, join[0].attributes[0], join[1].attributes[0]);
         }
-        else
+
+        vector<int> l1;
+        vector<int> l2;
+
+        if (table.size() > 0)
         {
-            if (tables.size() > 0)
+            l2 = table[0].search(table_condition[table[0].name]);
+            temp_table = Equi_Join(table[0], table[0], l1, l2);
+            if (table.size() > 1)
             {
-                vector<int> l1 = tables[0].search(table_condition[tables[0].name]);
-                vector<int> l2;
-                temp_table = Equi_Join(tables[0], tables[0], l1, l2);
-                for (int i = 1; i < tables.size(); i++)
+                for (int i = 1; i < table.size(); i++)
                 {
-                    vector<int> l1;
-                    vector<int> l2 = tables[i].search(table_condition[tables[i].name]);
-                    temp_table = Equi_Join(temp_table, tables[i], l1, l2);
+                    l2 = table[i].search(table_condition[table[i].name]);
+                    temp_table = Equi_Join(temp_table, table[i], l1, l2);
                 }
             }
         }
 
+        if (join.size() > 0)
+        {
+            if (table.size() > 0)
+            {
+                vector<Condition> condition;
+                l1 = temp_table.search(condition);
+                l2 = join_table.search(condition);
+                temp_table = Equi_Join(temp_table, join_table, l1, l2);
+            }
+            else
+                temp_table = join_table;
+        }
+
+
+
+
         for (int i = 0; i < temp_table.attributes.size(); i++)
         {
-            for (int j = 0; j < projection.size(); j++)
-                if (temp_table.attributes[i].name == projection[j].name)
+
+            for (int j = 0; j < attri_name.size(); j++)
+                if (temp_table.attributes[i].name == attri_name[j])
                 {
                     P.push_back(i);
                     break;
