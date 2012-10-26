@@ -15,6 +15,10 @@ public:
     string attri_name;
     char operate;
     string value;
+    Condition()
+    {
+        
+    }
     Condition(string table_name,string attri_name,char operate,string value)
     {
         this->table_name = table_name;

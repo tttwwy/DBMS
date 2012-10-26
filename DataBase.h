@@ -453,6 +453,10 @@ public:
     void Select(vector<string> table_name, vector<string> attri_name, vector<Table> join, vector<Condition> condition)
     {
 
+        for (int i = 0;i < condition.size();i++)
+        {
+            condition[i].attri_name = condition[i].table_name + "." + condition[i].attri_name;
+        }
         Table temp_table;
         Table join_table;
         vector<int> P;
