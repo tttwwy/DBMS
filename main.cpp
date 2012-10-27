@@ -21,8 +21,8 @@ int main(int argc, char** argv)
     temp1.push_back(Attribute("phone", INT, 4));
     data.create_table("person", 1, temp1);
 
-    temp1.push_back(Attribute("name", CHAR, 4));
-    temp1.push_back(Attribute("id", INT, 4));
+//    temp1.push_back(Attribute("name", CHAR, 4));
+//    temp1.push_back(Attribute("id", INT, 4));
     data.create_table("class", 1, temp1);
 
     vector<Attribute> temp2;
@@ -64,13 +64,13 @@ int main(int argc, char** argv)
     b.table_name = "person";
     b.operate = '=';
     b.attri_name = "name";
-    b.value = "Jack";
+    b.value = "Toms";
     conditions.push_back(b);
     
-         sql_input();
+//         sql_input();
     //
 //    cout << endl;
-//    data.Select(table_name, attri_name, a, conditions);
+    data.Select(table_name, attri_name, a, conditions);
 
     //    data.tables[0].Delete("phone", '=', "1111");
     //    vector<int> a=   data.tables[0].search(Condition("phone",'>',"1111"));

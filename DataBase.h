@@ -90,8 +90,18 @@ public:
 
     //建立新表
 
-    void create_table(string table_name, int key_num, vector<Attribute> attributes)
+    int create_table(string table_name, int key_num, vector<Attribute> attributes)
     {
+        map<string, int> test;
+        for (int i = 0; i < attributes.size(); i++)
+        {
+            test[attributes[i].name]++;
+        }
+        for (int i = 0; i < attributes.size(); i++)
+        {
+            if (test[attributes[i].name] > 0)
+                return 0;
+        }
 
         //将新表写入内存
         Table table;
@@ -116,6 +126,7 @@ public:
             file.write((char *) &(p->size), INTSIZE);
         }
         file.close();
+        return 1;
     }
 
     //等值连接
@@ -164,7 +175,7 @@ public:
                 if (judge == '0')
                     continue;
                 record[0] = '1';
-                file2.read(record+1, table2.get_record_size());
+                file2.read(record + 1, table2.get_record_size());
                 temp.write(record, newsize);
             }
         }
@@ -192,7 +203,8 @@ public:
         file1.close();
         file2.close();
         temp.close();
-//        delete []record;
+        if (newsize > 0)
+            delete []record;
 
         if (l1.size() > 0)
         {
@@ -209,6 +221,7 @@ public:
 
         rename("temp/temp1", "temp/temp");
         table.name = "temp/temp";
+        table.describe();
         return table;
     }
 
@@ -321,7 +334,8 @@ public:
         temp.close();
         delete temp1;
         delete temp2;
-        delete record;
+        if (newsize > 0)
+            delete[] record;
 
 
 
@@ -438,7 +452,7 @@ public:
         }
         file1.close();
         file2.close();
-//        delete[] temp;
+        //        delete[] temp;
         rename("temp/temp1", "temp/temp");
         Table temp_table("temp/temp", 0, attributes);
         return temp_table;
@@ -453,9 +467,9 @@ public:
 
     void Select(vector<string> table_name, vector<string> attri_name, vector<Table> join, vector<Condition> condition)
     {
-        
-        cout << "!!!"  << endl;
-        for (int i = 0;i < condition.size();i++)
+
+
+        for (int i = 0; i < condition.size(); i++)
         {
             condition[i].attri_name = condition[i].table_name + "." + condition[i].attri_name;
         }
