@@ -694,7 +694,7 @@ void sql_select(char *cmd, int start)
         table_name.push_back(tmp_name);
         token = strtok(NULL, ",.");
     }
-    cout << "jj!!!" << endl;
+  
     for (int i = 5; i < a_cnt; i += 2)
     {
         int sum = 0;
@@ -760,7 +760,7 @@ void sql_select(char *cmd, int start)
             conditon.push_back(tmp_con);
         }
     }
-    cout << "!!!" << endl;
+
     
     data.Select(table_name, attri_name, join, conditon);
 }

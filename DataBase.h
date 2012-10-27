@@ -572,7 +572,7 @@ public:
                 }
         }
         temp_table = Projection(temp_table.attributes, P);
-        temp_table.show_table();
+       
 
     }
 

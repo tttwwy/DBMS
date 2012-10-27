@@ -13,16 +13,16 @@ using namespace std;
 int main(int argc, char** argv)
 {
 
-           
+
     //
-//    DataBase data;
+    //    DataBase data;
     vector<Attribute> temp1;
     temp1.push_back(Attribute("name", CHAR, 4));
     temp1.push_back(Attribute("phone", INT, 4));
     data.create_table("person", 1, temp1);
 
-//    temp1.push_back(Attribute("name", CHAR, 4));
-//    temp1.push_back(Attribute("id", INT, 4));
+    //    temp1.push_back(Attribute("name", CHAR, 4));
+    //    temp1.push_back(Attribute("id", INT, 4));
     data.create_table("class", 1, temp1);
 
     vector<Attribute> temp2;
@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     temp2.push_back(Attribute("id", CHAR, 4));
     data.create_table("student", 1, temp2);
     data.read_table();
-    data.show_database();
+    //    data.show_database();
 
     vector<string> attri1;
     vector<string> value1;
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
     data.tables[0].Insert(attri2, value2);
     data.tables[1].Insert(attri1, value1);
     data.tables[1].Insert(attri2, value2);
-    data.tables[0].show_table();
+    //    data.tables[0].show_table();
 
     vector<string> table_name;
     vector<string> attri_name;
@@ -58,27 +58,30 @@ int main(int argc, char** argv)
     table_name.push_back("class");
     attri_name.push_back("person.name");
     attri_name.push_back("class.phone");
-    vector<Table> a;
-    vector<Condition> conditions;
-    Condition b;
-    b.table_name = "person";
-    b.operate = '=';
-    b.attri_name = "name";
-    b.value = "Toms";
-//    conditions.push_back(b);
-    vector<Table> join;
-    Table tempa;
-    tempa.name = "person";
-    tempa.attributes.push_back(Attribute("name", CHAR, 4));
-    join.push_back(tempa);
-    tempa.name = "class";
-    join.push_back(tempa);
-//         sql_input();
+
+    sql_input();
+
+    //    vector<Table> a;
+    //    vector<Condition> conditions;
+    //    Condition b;
+    //    b.table_name = "person";
+    //    b.operate = '=';
+    //    b.attri_name = "name";
+    //    b.value = "Toms";
+    ////    conditions.push_back(b);
+    //    vector<Table> join;
+    //    Table tempa;
+    //    tempa.name = "person";
+    //    tempa.attributes.push_back(Attribute("name", CHAR, 4));
+    //    join.push_back(tempa);
+    //    tempa.name = "class";
+    //    join.push_back(tempa);
+
     //
-//    cout << endl;
-    data.Select(table_name, attri_name, join, conditions);
-//    data.tables[0].show_table();
-//    data.tables[1].show_table();
+    //    cout << endl;
+    //    data.Select(table_name, attri_name, join, conditions);
+    //    data.tables[0].show_table();
+    //    data.tables[1].show_table();
 
     //    data.tables[0].Delete("phone", '=', "1111");
     //    vector<int> a=   data.tables[0].search(Condition("phone",'>',"1111"));
