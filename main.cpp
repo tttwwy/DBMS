@@ -7,15 +7,15 @@
 #include "Table.h"
 #include "DataBase.h"
 DataBase data;
-//#include "Sql.h"
+#include "Sql.h"
 using namespace std;
 
 int main(int argc, char** argv)
 {
 
-    //            sql_input();
+           
     //
-    DataBase data;
+//    DataBase data;
     vector<Attribute> temp1;
     temp1.push_back(Attribute("name", CHAR, 4));
     temp1.push_back(Attribute("phone", INT, 4));
@@ -57,6 +57,7 @@ int main(int argc, char** argv)
     table_name.push_back("person");
     table_name.push_back("class");
     attri_name.push_back("person.name");
+    attri_name.push_back("class.name");
     vector<Table> a;
     vector<Condition> conditions;
     Condition b;
@@ -65,9 +66,11 @@ int main(int argc, char** argv)
     b.attri_name = "name";
     b.value = "Jack";
     conditions.push_back(b);
+    
+         sql_input();
     //
-    cout << endl;
-    data.Select(table_name, attri_name, a, conditions);
+//    cout << endl;
+//    data.Select(table_name, attri_name, a, conditions);
 
     //    data.tables[0].Delete("phone", '=', "1111");
     //    vector<int> a=   data.tables[0].search(Condition("phone",'>',"1111"));
