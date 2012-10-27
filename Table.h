@@ -221,10 +221,20 @@ public:
         int i, j;
         file.open(name.c_str(), ios::in | ios::binary);
         file.seekg(0, ios::end);
-        int record_num = file.tellg() / get_record_size(); //计算元组总条数            
+        int record_num = file.tellg() / get_record_size(); //计算元组总条数 
+
         vector<int> output;
         vector<int> attri_p;
         vector<Attribute> attri;
+        if (condition.size() == 0)
+        {
+            for (int i = 0;i < record_num;i++)
+            {
+                output.push_back(i);
+            }
+
+            return output;
+        }
         int temp = 0;
         for (j = 0; j < condition.size(); j++)
         {

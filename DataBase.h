@@ -192,7 +192,7 @@ public:
         file1.close();
         file2.close();
         temp.close();
-        delete record;
+//        delete []record;
 
         if (l1.size() > 0)
         {
@@ -453,6 +453,7 @@ public:
     void Select(vector<string> table_name, vector<string> attri_name, vector<Table> join, vector<Condition> condition)
     {
 
+        cout << attri_name[0] << endl;
         for (int i = 0;i < condition.size();i++)
         {
             condition[i].attri_name = condition[i].table_name + "." + condition[i].attri_name;
@@ -504,6 +505,7 @@ public:
         vector<int> l1;
         vector<int> l2;
 
+        vector<Condition> temp_con;
         if (table.size() > 0)
         {
             l2 = table[0].search(table_condition[table[0].name]);
@@ -513,6 +515,9 @@ public:
                 for (int i = 1; i < table.size(); i++)
                 {
                     l2 = table[i].search(table_condition[table[i].name]);
+                    l1 = temp_table.search(temp_con);
+                    if (l2.size() == 0)
+                        continue;
                     temp_table = Equi_Join(temp_table, table[i], l1, l2);
                 }
             }
