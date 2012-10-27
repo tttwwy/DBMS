@@ -45,14 +45,14 @@ public:
         //        Insert(attri_name, value);
     }
 
-	int find_attr(string attr_name)
-	{
+    int find_attr(string attr_name)
+    {
         for (int i = 0; i < attributes.size(); i++)
-			if(attributes[i].name == attr_name)
-				return i;
+            if (attributes[i].name == attr_name)
+                return i;
 
-		return -1;
-	}
+        return -1;
+    }
 
     vector<string> get_all_attributes_name()
     {
@@ -237,7 +237,7 @@ public:
         vector<Attribute> attri;
         if (condition.size() == 0)
         {
-            for (int i = 0;i < record_num;i++)
+            for (int i = 0; i < record_num; i++)
             {
                 output.push_back(i);
             }
@@ -380,20 +380,38 @@ public:
 
     void show_table()
     {
-        for (int i = 0; i < attributes.size(); i++)
+        bool print = false;
+        if (attributes.size() > 0)
         {
-            bool print = false;
-            for (int j = 0; j < attributes[i].name.size(); j++)
+            for (int i = 0; i < attributes[0].name.size(); i++)
             {
-                if (print)
-                    cout << attributes[i].name[j];
-                if (attributes[i].name[j] == '.')
-                {
+                if (attributes[0].name[i] == '.')
                     print = true;
-                }
             }
-            cout << "  ";
         }
+
+        if (print == false)
+        {
+            for (int i = 0; i < attributes.size(); i++)
+            {
+                cout << attributes[i].name << " ";
+            }
+        }
+        else
+            for (int i = 0; i < attributes.size(); i++)
+            {
+
+                for (int j = 0; j < attributes[i].name.size(); j++)
+                {
+                    if (print)
+                        cout << attributes[i].name[j];
+                    if (attributes[i].name[j] == '.')
+                    {
+                        print = true;
+                    }
+                }
+                cout << "  ";
+            }
         cout << endl;
 
         fstream file;

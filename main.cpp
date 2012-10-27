@@ -57,7 +57,7 @@ int main(int argc, char** argv)
     table_name.push_back("person");
     table_name.push_back("class");
     attri_name.push_back("person.name");
-    attri_name.push_back("class.name");
+    attri_name.push_back("class.phone");
     vector<Table> a;
     vector<Condition> conditions;
     Condition b;
@@ -65,12 +65,20 @@ int main(int argc, char** argv)
     b.operate = '=';
     b.attri_name = "name";
     b.value = "Toms";
-    conditions.push_back(b);
-    
+//    conditions.push_back(b);
+    vector<Table> join;
+    Table tempa;
+    tempa.name = "person";
+    tempa.attributes.push_back(Attribute("name", CHAR, 4));
+    join.push_back(tempa);
+    tempa.name = "class";
+    join.push_back(tempa);
 //         sql_input();
     //
 //    cout << endl;
-    data.Select(table_name, attri_name, a, conditions);
+    data.Select(table_name, attri_name, join, conditions);
+//    data.tables[0].show_table();
+//    data.tables[1].show_table();
 
     //    data.tables[0].Delete("phone", '=', "1111");
     //    vector<int> a=   data.tables[0].search(Condition("phone",'>',"1111"));

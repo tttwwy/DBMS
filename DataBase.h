@@ -99,7 +99,7 @@ public:
         }
         for (int i = 0; i < attributes.size(); i++)
         {
-            if (test[attributes[i].name] > 0)
+            if (test[attributes[i].name] > 1)
                 return 0;
         }
 
@@ -348,6 +348,8 @@ public:
 
         rename("temp/temp1", "temp/temp");
         table.name = "temp/temp";
+        cout << "!!!!!!!!!!!!!!!!!!1"<<endl;
+        table.show_table();
         return table;
 
     }
@@ -472,6 +474,11 @@ public:
         for (int i = 0; i < condition.size(); i++)
         {
             condition[i].attri_name = condition[i].table_name + "." + condition[i].attri_name;
+        }
+
+        for (int i = 0; i < join.size(); i++)
+        {
+            join[i].attributes[0].name = join[i].name + "." + join[i].attributes[0].name;
         }
         Table temp_table;
         Table join_table;
