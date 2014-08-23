@@ -1,4 +1,3 @@
-DBMS
+小型数据库
 ====
-
-a simple Database_management_system
+支持数据库的增删查改
